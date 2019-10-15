@@ -17,40 +17,41 @@ public class PublisherService {
 	@Autowired
 	PublisherDao publisherDao;
 	
-	public String addPublisher(int publisherId, String publisherName) throws SQLException {
+	public boolean addPublisher(Publisher publisher) throws SQLException {
 		List<Integer> publisherList = publisherDao.findAll();	
-		if(!publisherList.contains(publisherId)) {
-			Publisher publisher = new Publisher();
-			publisher.setPublisherId(publisherId);
-			publisher.setPublisherName(publisherName);
-			publisherDao.addPublisher(publisher);
-			return "<h3>Add publisher successfully.</h3>";
+		if(!publisherList.contains(publisher.getPublisherId())) {
+			Publisher newPublisher = new Publisher();
+			newPublisher.setPublisherId(publisher.getPublisherId());
+			newPublisher.setPublisherName(publisher.getPublisherName());
+			publisherDao.addPublisher(newPublisher);
+			return true;
 		} 	
-			return "<h3>Unable to add publisher.Publisher id is already exist.</h3>";		
+			return false;	
 	}
 	
-	public String updatePublisher(int publisherId, String publisherName) throws SQLException {
-		List<Integer> publisherList = publisherDao.findAll();	
-		if(publisherList.contains(publisherId)) {
-			Publisher publisher = new Publisher();
-			publisher.setPublisherId(publisherId);
-			publisher.setPublisherName(publisherName);
-			publisherDao.updatePublisher(publisher);
-			return "<h3>Update publisher successfully.</h3>";
-		} 	
-			return "<h3>Unable to update publisher.Publisher id doesn't exist.</h3>";
-	}
-
-	public String deletePublisher(int publisherId) throws SQLException {
+	public boolean updatePublisher(Publisher publisher) throws SQLException {
 		// TODO Auto-generated method stub
 		List<Integer> publisherList = publisherDao.findAll();	
-		if(publisherList.contains(publisherId)) {
-			Publisher publisher = new Publisher();
-			publisher.setPublisherId(publisherId);
-			publisherDao.deletePublisher(publisher);
-			return "<h3>Delete publisher successfully.</h3>";
+		if(publisherList.contains(publisher.getPublisherId())) {
+			Publisher newPublisher = new Publisher();
+			newPublisher.setPublisherId(publisher.getPublisherId());
+			newPublisher.setPublisherName(publisher.getPublisherName());
+			publisherDao.updatePublisher(newPublisher);
+			return true;
 		} 	
-			return "<h3>Unable to delete publisher.Publisher id doesn't exist.</h3>";
+			return false;	
+	}
+
+	public boolean deletePublisher(Publisher publisher) throws SQLException {
+		// TODO Auto-generated method stub
+		List<Integer> publisherList = publisherDao.findAll();	
+		if(publisherList.contains(publisher.getPublisherId())) {
+			Publisher deletePublisher = new Publisher();
+			deletePublisher.setPublisherId(publisher.getPublisherId());
+			publisherDao.deletePublisher(deletePublisher);
+			return true;
+		} 	
+			return false;	
 	}
 	
 	

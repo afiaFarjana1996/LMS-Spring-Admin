@@ -16,42 +16,42 @@ public class BorrowerService {
 	@Autowired
 	BorrowerDao borrowerDao;
 	
-	public String addBorrower(int cardNo, String name) throws SQLException {
+	public boolean addBorrower(Borrower borrower) throws SQLException {
 		// TODO Auto-generated method stub
 		List<Integer> borrowerList = borrowerDao.findAll();	
-		if(!borrowerList.contains(cardNo)) {
-		    Borrower borrower = new Borrower();
-		    borrower.setCardNo(cardNo);
-		    borrower.setName(name);
-			borrowerDao.addBorrower(borrower);
-			return "<h3>Add borrower successfully.</h3>";
+		if(!borrowerList.contains(borrower.getCardNo())) {
+		    Borrower newBorrower = new Borrower();
+		    newBorrower.setCardNo(borrower.getCardNo());
+		    newBorrower.setName(borrower.getName());
+			borrowerDao.addBorrower(newBorrower);
+			return true;
 		} 	
-			return "<h3>Unable to add borrower.Borrower id is already exist.</h3>";	
+			return false;
 	}
 
-	public String updateBorrower(int cardNo, String name) throws SQLException {
+	public boolean updateBorrower(Borrower borrower) throws SQLException {
 		// TODO Auto-generated method stub
 		List<Integer> borrowerList = borrowerDao.findAll();	
-		if(borrowerList.contains(cardNo)) {
-		    Borrower borrower = new Borrower();
-		    borrower.setCardNo(cardNo);
-		    borrower.setName(name);
-			borrowerDao.updateBorrower(borrower);
-			return "<h3>Update borrower successfully.</h3>";
+		if(borrowerList.contains(borrower.getCardNo())) {
+		    Borrower newBorrower = new Borrower();
+		    newBorrower.setCardNo(borrower.getCardNo());
+		    newBorrower.setName(borrower.getName());
+			borrowerDao.updateBorrower(newBorrower);
+			return true;
 		} 	
-			return "<h3>Unable to update borrower.Borrower id doesn't exist.</h3>";	
+			return false;
 	}
 
-	public String deleteBorrower(int cardNo) throws SQLException {
+	public boolean deleteBorrower(Borrower borrower) throws SQLException {
 		// TODO Auto-generated method stub
 		List<Integer> borrowerList = borrowerDao.findAll();	
-		if(borrowerList.contains(cardNo)) {
-		    Borrower borrower = new Borrower();
-		    borrower.setCardNo(cardNo);
-			borrowerDao.deleteBorrower(borrower);
-			return "<h3>Delete borrower successfully.</h3>";
+		if(borrowerList.contains(borrower.getCardNo())) {
+		    Borrower deleteBorrower = new Borrower();
+		    deleteBorrower.setCardNo(borrower.getCardNo());
+			borrowerDao.deleteBorrower(deleteBorrower);
+			return true;
 		} 	
-			return "<h3>Unable to delete borrower.Borrower id doesn't exist.</h3>";	
+			return false;
 	}
 
 	

@@ -2,7 +2,10 @@ package com.ss.lms.service;
 
 import java.sql.SQLException;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import com.ss.lms.dao.AuthorDao;
 import com.ss.lms.entity.Author;
@@ -12,42 +15,42 @@ public class AuthorService {
 
 	@Autowired
 	AuthorDao authorDao;
-	
-	public String addAuthor(int authorId, String authorName) throws SQLException {
-		List<Integer> authorList = authorDao.findAll();	
-		if(!authorList.contains(authorId)) {
-			Author author = new Author();
-			author.setAuthorId(authorId);
-			author.setAuthorName(authorName);
-			authorDao.addAuthor(author);
-			return "<h3>Add author successfully.</h3>";
-		} 	
-			return "<h3>Unable to add author.Author id is already exist.</h3>";		
-	}
-	
-	public String updateAuthor(int authorId, String authorName) throws SQLException {
-		List<Integer> authorList = authorDao.findAll();	
-		if(authorList.contains(authorId)) {
-			Author author = new Author();
-			author.setAuthorId(authorId);
-			author.setAuthorName(authorName);
-			authorDao.updateAuthor(author);
-			return "<h3>Update author successfully.</h3>";
-		} 	
-			return "<h3>Unable to update author.Author id doesn't exist.</h3>";	
+
+	public boolean addAuthor(Author author) throws SQLException {
+		List<Integer> authorList = authorDao.findAll();
+		if (!authorList.contains(author.getAuthorId())) {
+			Author newAuthor = new Author();
+			newAuthor.setAuthorId(author.getAuthorId());
+			newAuthor.setAuthorName(author.getAuthorName());
+			authorDao.addAuthor(newAuthor);
+			return true;
+		}
+		return false;
+
 	}
 
-	public String deleteAuthor(int authorId) throws SQLException {
-		// TODO Auto-generated method stub
-		List<Integer> authorList = authorDao.findAll();	
-		if(authorList.contains(authorId)) {
-			Author author = new Author();
-			author.setAuthorId(authorId);
-			authorDao.deleteAuthor(author);
-			return "<h3>Delete author successfully.</h3>";
-		} 	
-			return "<h3>Unable to delete author.Author id doesn't exist.</h3>";	
+	public boolean updateAuthor(Author author) throws SQLException {
+		List<Integer> authorList = authorDao.findAll();
+		if (authorList.contains(author.getAuthorId())) {
+			Author uopdateAuthor = new Author();
+			uopdateAuthor.setAuthorId(author.getAuthorId());
+			uopdateAuthor.setAuthorName(author.getAuthorName());
+			authorDao.updateAuthor(uopdateAuthor);
+			return true;
+		}
+		return false;
 	}
-	
-	
+
+	public boolean deleteAuthor(Author author) throws SQLException {
+		// TODO Auto-generated method stub
+		List<Integer> authorList = authorDao.findAll();
+		if (authorList.contains(author.getAuthorId())) {
+			Author deleteAuthor = new Author();
+			deleteAuthor.setAuthorId(author.getAuthorId());
+			authorDao.deleteAuthor(deleteAuthor);
+			return true;
+		}
+		return false;
+	}
+
 }

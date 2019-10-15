@@ -16,63 +16,62 @@ public class BookService {
 	@Autowired
 	BookDao bookDao;
 
-	public String addBook(int bookId, String title, int authId, int pubId) {
+	public boolean addBook(Book book) {
 		// TODO Auto-generated method stub
 		List<Integer> bookList = bookDao.findAll();	
-		if(!bookList.contains(bookId)) {
-			Book book = new Book();
-			book.setBookId(bookId);
-			book.setTitle(title);
+		if(!bookList.contains(book.getBookId())) {
+			Book newBook = new Book();
+			newBook.setBookId(book.getBookId());
+			newBook.setTitle(book.getTitle());
 			
 			Author author = new Author();
-			author.setAuthorId(authId);
-			book.setAuthor(author);
+			author.setAuthorId(book.getAuthor().getAuthorId());
+			newBook.setAuthor(author);
 			
 			Publisher publisher = new Publisher();
-			publisher.setPublisherId(pubId);
-			book.setPublisher(publisher);
+			publisher.setPublisherId(book.getPublisher().getPublisherId());
+			newBook.setPublisher(publisher);
 			
-			bookDao.addBook(book);
-			return "<h3>Add book successfully.</h3>";
+			bookDao.addBook(newBook);
+			return true;
 		} 	
-			return "<h3>Unable to add book.Book id is already exist.</h3>";	
+		return false;
 	}
 
-	public String updateBook(int bookId, String title, int authId, int pubId) {
+	public boolean updateBook(Book book) {
 		// TODO Auto-generated method stub
 
 		List<Integer> bookList = bookDao.findAll();	
-		if(bookList.contains(bookId)) {
-			Book book = new Book();
-			book.setBookId(bookId);
-			book.setTitle(title);
+		if(bookList.contains(book.getBookId())) {
+			Book newBook = new Book();
+			newBook.setBookId(book.getBookId());
+			newBook.setTitle(book.getTitle());
 			
 			Author author = new Author();
-			author.setAuthorId(authId);
-			book.setAuthor(author);
+			author.setAuthorId(book.getAuthor().getAuthorId());
+			newBook.setAuthor(author);
 			
 			Publisher publisher = new Publisher();
-			publisher.setPublisherId(pubId);
-			book.setPublisher(publisher);
+			publisher.setPublisherId(book.getPublisher().getPublisherId());
+			newBook.setPublisher(publisher);
 			
-			bookDao.updateBook(book);
-			return "<h3>Update book successfully.</h3>";
+			bookDao.updateBook(newBook);
+			return true;
 		} 	
-			return "<h3>Unable to update book.Book id doenn't exist.</h3>";	
-		
-		
+		return false;
+	
 	}
 
-	public String deleteBook(int bookId) {
+	public boolean deleteBook(Book book ) {
 		// TODO Auto-generated method stub
 		List<Integer> bookList = bookDao.findAll();	
-		if(bookList.contains(bookId)) {
-			Book book = new Book();
-			book.setBookId(bookId);		
-			bookDao.deleteBook(book);
-			return "<h3>Delete book successfully.</h3>";
+		if(bookList.contains(book.getBookId())) {
+			Book deleteBook = new Book();
+			deleteBook.setBookId(book.getBookId());	
+			bookDao.deleteBook(deleteBook);
+			return true;
 		} 	
-			return "<h3>Unable to delete book.Book id doesn't exist.</h3>";	
+		return false;
 	}
 
 }

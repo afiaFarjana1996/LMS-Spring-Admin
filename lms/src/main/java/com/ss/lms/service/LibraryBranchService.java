@@ -16,42 +16,44 @@ public class LibraryBranchService {
 	@Autowired
 	LibraryBranchDao libraryBranchDao;
 	
-	public String addLibraryBranch(int branchId, String branchName) throws SQLException {
+	public boolean addLibraryBranch(LibraryBranch libraryBranch) throws SQLException {
 		// TODO Auto-generated method stub
 		List<Integer> branchList = libraryBranchDao.findAll();	
-		if(!branchList.contains(branchId)) {
-			LibraryBranch libraryBranch = new LibraryBranch();
-			libraryBranch.setBranchId(branchId);
-			libraryBranch.setBranchName(branchName);
-			libraryBranchDao.addLibraryBranch(libraryBranch);
-			return "<h3>Add library branch successfully.</h3>";
+		if(!branchList.contains(libraryBranch.getBranchId())) {
+			LibraryBranch newBranch = new LibraryBranch();
+			newBranch.setBranchId(libraryBranch.getBranchId());
+			newBranch.setBranchName(libraryBranch.getBranchName());
+			libraryBranchDao.addLibraryBranch(newBranch);
+			return true;
 		} 	
-			return "<h3>Unable to add library branch.Branch id is already exist.</h3>";	
+			return false;
 	}
 
-	public String updateLibraryBranch(int branchId, String branchName) throws SQLException {
+	public boolean updateLibraryBranch(LibraryBranch libraryBranch) throws SQLException {
 		// TODO Auto-generated method stub
+		
 		List<Integer> branchList = libraryBranchDao.findAll();	
-		if(branchList.contains(branchId)) {
-			LibraryBranch libraryBranch = new LibraryBranch();
-			libraryBranch.setBranchId(branchId);
-			libraryBranch.setBranchName(branchName);
-			libraryBranchDao.updateLibraryBranch(libraryBranch);
-			return "<h3>Update library branch successfully.</h3>";
+		if(branchList.contains(libraryBranch.getBranchId())) {
+			LibraryBranch newBranch = new LibraryBranch();
+			newBranch.setBranchId(libraryBranch.getBranchId());
+			newBranch.setBranchName(libraryBranch.getBranchName());
+			libraryBranchDao.updateLibraryBranch(newBranch);
+			return true;
 		} 	
-			return "<h3>Unable to update library branch.Branch id doesn't exist.</h3>";	
+			return false;
 	}
 
-	public String deleteLibraryBranch(int branchId) throws SQLException {
+	public boolean deleteLibraryBranch(LibraryBranch libraryBranch) throws SQLException {
 		// TODO Auto-generated method stub
+		
 		List<Integer> branchList = libraryBranchDao.findAll();	
-		if(branchList.contains(branchId)) {
-			LibraryBranch libraryBranch = new LibraryBranch();
-			libraryBranch.setBranchId(branchId);
-			libraryBranchDao.deleteLibraryBranch(libraryBranch);
-			return "<h3>Delete library branch successfully.</h3>";
+		if(branchList.contains(libraryBranch.getBranchId())) {
+			LibraryBranch deleteBranch = new LibraryBranch();
+			deleteBranch.setBranchId(libraryBranch.getBranchId());
+			libraryBranchDao.deleteLibraryBranch(deleteBranch);
+			return true;
 		} 	
-			return "<h3>Unable to delete library branch.Branch id doesn't exist.</h3>";	
+			return false;
 	}
 
 }

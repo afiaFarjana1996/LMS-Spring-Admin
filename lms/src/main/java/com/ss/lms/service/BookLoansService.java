@@ -30,34 +30,36 @@ public class BookLoansService {
 	@Autowired
 	BorrowerDao borrowerDao;
 	
-	public String overrideDuedate(int bookId, int branchId, int cardNo, Date duedate) throws SQLException {
+	public boolean overrideDuedate(BookLoans bookLoans) throws SQLException {
 		// TODO Auto-generated method stub	
 		
 		List<Integer> bookList = bookDao.findAll();	
 		List<Integer> branchList = libraryBranchDao.findAll();	
 		List<Integer> borrowerList = borrowerDao.findAll();	
-		if(bookList.contains(bookId) && branchList.contains(branchId) && borrowerList.contains(cardNo)) {
+		
+		if(bookList.contains(bookLoans.getBook().getBookId()) && 
+				branchList.contains(bookLoans.getLibraryBranch().getBranchId()) 
+				&& borrowerList.contains(bookLoans.getBorrower().getCardNo())) {
+			
 			Book book = new Book();
-			book.setBookId(bookId);
+			book.setBookId(bookLoans.getBook().getBookId());
 			
 			LibraryBranch libraryBranch = new LibraryBranch();
-			libraryBranch.setBranchId(branchId);
+			libraryBranch.setBranchId(bookLoans.getLibraryBranch().getBranchId());
 			
 			Borrower borrower = new Borrower();
-			borrower.setCardNo(cardNo);
+			borrower.setCardNo(bookLoans.getBorrower().getCardNo());
 			
-			BookLoans bookLoans = new BookLoans();
-			bookLoans.setBook(book);
-			bookLoans.setLibraryBranch(libraryBranch);
-			bookLoans.setBorrower(borrower);
-			bookLoans.setDueDate(duedate);
+			BookLoans newBookLoans = new BookLoans();
+			newBookLoans.setBook(book);
+			newBookLoans.setLibraryBranch(libraryBranch);
+			newBookLoans.setBorrower(borrower);
+			newBookLoans.setDueDate(bookLoans.getDueDate());
 		
-			bookLoansDao.overrideDuedate(bookLoans);
-			return "<h3>Over_ride due date successfully.</h3>";
+			bookLoansDao.overrideDuedate(newBookLoans);
+			return true;
 		}
-		
-		
-		return "<h3>Unable to override duedate. Book loan doesn't exist.</h3>";
+		return false;
 	}
 
 }
