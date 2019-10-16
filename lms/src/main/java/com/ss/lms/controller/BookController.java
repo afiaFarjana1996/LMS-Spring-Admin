@@ -2,6 +2,9 @@ package com.ss.lms.controller;
 
 import java.sql.SQLException;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.Produces;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,25 +20,17 @@ import com.ss.lms.entity.Publisher;
 import com.ss.lms.service.BookService;
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping(value = "/lms/admin*")
+@Produces({"application/xml", "application/json"})
+@Consumes({"application/xml", "application/json"})
 public class BookController {
 
 	@Autowired
 	BookService bookService;
 	
-	@RequestMapping(value = "/add_books/{bookId}/{title}/{authId}/{pubId}", method = RequestMethod.POST)
-	public ResponseEntity<?> addBook(@PathVariable int bookId,@PathVariable String title,
-			@PathVariable int authId, @PathVariable int pubId) throws SQLException {
+	@RequestMapping(value = "/books", method = RequestMethod.POST)
+	public ResponseEntity<?> addBook(@RequestBody Book book) throws SQLException {
 
-		   Book book = new Book();
-		   book.setBookId(bookId);
-		   book.setTitle(title);
-		   Author author = new Author();
-		   author.setAuthorId(authId);
-		   book.setAuthor(author);
-		   Publisher publisher = new Publisher();
-		   publisher.setPublisherId(pubId);
-		   book.setPublisher(publisher);
 		   
 		   if(bookService.addBook(book)) {
 			   return new ResponseEntity<Book>(book, HttpStatus.CREATED);
@@ -44,20 +39,10 @@ public class BookController {
 		   }	
 	}
 	
-	@RequestMapping(value = "/update_books/{bookId}/{title}/{authId}/{pubId}", method = RequestMethod.PUT)
-	public ResponseEntity<?> updateBook(@PathVariable int bookId,@PathVariable String title,
-			@PathVariable int authId, @PathVariable int pubId) throws SQLException {
+	@RequestMapping(value = "/books/{bookId}", method = RequestMethod.PUT)
+	public ResponseEntity<?> updateBook(@RequestBody Book book, @PathVariable int bookId) throws SQLException {
 		
-		   Book book = new Book();
-		   book.setBookId(bookId);
-		   book.setTitle(title);
-		   Author author = new Author();
-		   author.setAuthorId(authId);
-		   book.setAuthor(author);
-		   Publisher publisher = new Publisher();
-		   publisher.setPublisherId(pubId);
-		   book.setPublisher(publisher);
-		   
+		  book.setBookId(bookId);
 		 if(bookService.updateBook(book)) {
 			   return new ResponseEntity<Book>(book, HttpStatus.OK);
 		   }else {
@@ -65,16 +50,17 @@ public class BookController {
 		   }
 	}
 	
-	@RequestMapping(value = "/delete_books/{bookId}", method = RequestMethod.DELETE)
+	
+	@RequestMapping(value = "/books/{bookId}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> deleteBook(@PathVariable int bookId) throws SQLException {
 	   
 		Book book = new Book();
 		book.setBookId(bookId);
 		
 		 if(bookService.deleteBook(book)) {
-			   return new ResponseEntity<Book>(book, HttpStatus.OK);
+			   return new ResponseEntity<Book>(HttpStatus.OK);
 		   }else {
-			   return new ResponseEntity<Book>(book, HttpStatus.NOT_FOUND);
+			   return new ResponseEntity<Book>(HttpStatus.NOT_FOUND);
 		   }
 	}
 

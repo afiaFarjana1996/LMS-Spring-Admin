@@ -2,6 +2,9 @@ package com.ss.lms.controller;
 
 import java.sql.SQLException;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.Produces;
+
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,38 +23,43 @@ import com.ss.lms.entity.Author;
 import com.ss.lms.service.AuthorService;
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping(value = "/lms/admin*")
+@Produces({"application/xml", "application/json"})
+@Consumes({"application/xml", "application/json"})
 public class AuthorController {	
 	@Autowired
 	AuthorService authorService;
 	
-	@RequestMapping(value = "/add_authors", method = RequestMethod.POST)
+	@RequestMapping(value = "/authors", method = RequestMethod.POST)
 	public ResponseEntity<?> addAuthor(@RequestBody Author author) throws SQLException {
-		
+		       
 		   if(authorService.addAuthor(author)) {
 			   return new ResponseEntity<Author>(author, HttpStatus.CREATED);
 		   }else {
 			   return new ResponseEntity<Author>(author, HttpStatus.CONFLICT);
-		   }		     
+		   }	
 	}
 	
-	@RequestMapping(value = "/update_authors", method = RequestMethod.PUT)
-	public ResponseEntity<?> updateAuthor(@RequestBody Author author) throws SQLException {
+	@RequestMapping(value = "/authors/{authorId}", method = RequestMethod.PUT)
+	public ResponseEntity<?> updateAuthor(@RequestBody Author author, @PathVariable int authorId) throws SQLException {
 		 
+		   author.setAuthorId(authorId);
 		   if(authorService.updateAuthor(author)) {
 			   return new ResponseEntity<Author>(author, HttpStatus.OK);
 		   }else {
-			   return new ResponseEntity<Author>(author, HttpStatus.CONFLICT);
+			   return new ResponseEntity<Author>(author, HttpStatus.BAD_REQUEST);
 		   }
 	}
 	
-	@RequestMapping(value = "/delete_authors", method = RequestMethod.DELETE)
-	public ResponseEntity<?> deleteAuthor(@RequestBody Author author) throws SQLException {
+	@RequestMapping(value = "/authors/{authorId}", method = RequestMethod.DELETE)
+	public ResponseEntity<?> deleteAuthor(@PathVariable int authorId) throws SQLException {
+		Author author = new Author();
+		author.setAuthorId(authorId);
 		
 		  if(authorService.deleteAuthor(author)) {
-			   return new ResponseEntity<Author>(author, HttpStatus.OK);
+			   return new ResponseEntity<Author>(HttpStatus.OK);
 		   }else {
-			   return new ResponseEntity<Author>(author, HttpStatus.NOT_FOUND);
+			   return new ResponseEntity<Author>(HttpStatus.NOT_FOUND);
 		   }
 	}
 

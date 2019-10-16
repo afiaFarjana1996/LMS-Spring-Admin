@@ -2,6 +2,9 @@ package com.ss.lms.controller;
 
 import java.sql.SQLException;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.Produces;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +20,14 @@ import com.ss.lms.service.AuthorService;
 import com.ss.lms.service.PublisherService;
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping(value = "/lms/admin*")
+@Produces({"application/xml", "application/json"})
+@Consumes({"application/xml", "application/json"})
 public class PublisherController {
 	@Autowired
 	PublisherService publisherService;
 	
-	
-	@RequestMapping(value = "/add_publishers", method = RequestMethod.POST)
+	@RequestMapping(value = "/publishers", method = RequestMethod.POST)
 	public ResponseEntity<?> addPublisher(@RequestBody Publisher publisher) throws SQLException {
 		
 		   if(publisherService.addPublisher(publisher)) {
@@ -33,22 +37,25 @@ public class PublisherController {
 		   }		     
 	}
 	
-	@RequestMapping(value = "/update_publishers", method = RequestMethod.PUT)
-	public ResponseEntity<?> updatePublisher(@RequestBody Publisher publisher) throws SQLException {
+	@RequestMapping(value = "/publishers/{publisherId}", method = RequestMethod.PUT)
+	public ResponseEntity<?> updatePublisher(@RequestBody Publisher publisher, @PathVariable int publisherId) throws SQLException {
 		
+		   publisher.setPublisherId(publisherId);
 		   if(publisherService.updatePublisher(publisher)) {
 			   return new ResponseEntity<Publisher>(publisher, HttpStatus.OK);
 		   }else {
 			   return new ResponseEntity<Publisher>(publisher, HttpStatus.CONFLICT);
 		   }		     
 	}
-	@RequestMapping(value = "/delete_publishers", method = RequestMethod.DELETE)
-	public ResponseEntity<?> deletePublisher(@RequestBody Publisher publisher) throws SQLException {
+	@RequestMapping(value = "/publishers/{publisherId}", method = RequestMethod.DELETE)
+	public ResponseEntity<?> deletePublisher(@PathVariable int publisherId) throws SQLException {
+		Publisher publisher = new Publisher();
+		publisher.setPublisherId(publisherId);
 		
 		   if(publisherService.deletePublisher(publisher)) {
-			   return new ResponseEntity<Publisher>(publisher, HttpStatus.OK);
+			   return new ResponseEntity<Publisher>(HttpStatus.OK);
 		   }else {
-			   return new ResponseEntity<Publisher>(publisher, HttpStatus.NOT_FOUND);
+			   return new ResponseEntity<Publisher>(HttpStatus.NOT_FOUND);
 		   }		     
 	}
 	

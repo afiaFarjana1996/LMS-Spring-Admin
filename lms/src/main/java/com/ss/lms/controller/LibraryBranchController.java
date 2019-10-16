@@ -2,6 +2,9 @@ package com.ss.lms.controller;
 
 import java.sql.SQLException;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.Produces;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +20,15 @@ import com.ss.lms.service.BorrowerService;
 import com.ss.lms.service.LibraryBranchService;
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping(value = "/lms/admin*")
+@Produces({"application/xml", "application/json"})
+@Consumes({"application/xml", "application/json"})
 public class LibraryBranchController {
 
 	@Autowired
 	LibraryBranchService libraryBranchService;	
 	
-	@RequestMapping(value = "/add_libraryBranch", method = RequestMethod.POST)
+	@RequestMapping(value = "/libraryBranches", method = RequestMethod.POST)
 	public ResponseEntity<?> addLibraryBranch(@RequestBody LibraryBranch libraryBranch) throws SQLException {
 		
 		   if(libraryBranchService.addLibraryBranch(libraryBranch)) {
@@ -33,9 +38,9 @@ public class LibraryBranchController {
 		   }		     
 	}
 	
-	@RequestMapping(value = "/update_libraryBranch", method = RequestMethod.PUT)
-	public ResponseEntity<?> updateLibraryBranch(@RequestBody LibraryBranch libraryBranch) throws SQLException {
-		
+	@RequestMapping(value = "/libraryBranches/{branchId}", method = RequestMethod.PUT)
+	public ResponseEntity<?> updateLibraryBranch(@RequestBody LibraryBranch libraryBranch,@PathVariable int branchId) throws SQLException {
+		   libraryBranch.setBranchId(branchId);
 		   if(libraryBranchService.updateLibraryBranch(libraryBranch)) {
 			   return new ResponseEntity<LibraryBranch>(libraryBranch, HttpStatus.OK);
 		   }else {
@@ -43,13 +48,14 @@ public class LibraryBranchController {
 		   }		     
 	}
 	
-	@RequestMapping(value = "/delete_libraryBranch", method = RequestMethod.DELETE)
-	public ResponseEntity<?> deleteLibraryBranch(@RequestBody LibraryBranch libraryBranch) throws SQLException {
-		
+	@RequestMapping(value = "/libraryBranches/{branchId}", method = RequestMethod.DELETE)
+	public ResponseEntity<?> deleteLibraryBranch(@PathVariable int branchId) throws SQLException {
+		 LibraryBranch libraryBranch = new LibraryBranch();
+		 libraryBranch.setBranchId(branchId);
 		   if(libraryBranchService.deleteLibraryBranch(libraryBranch)) {
-			   return new ResponseEntity<LibraryBranch>(libraryBranch, HttpStatus.OK);
+			   return new ResponseEntity<LibraryBranch>(HttpStatus.OK);
 		   }else {
-			   return new ResponseEntity<LibraryBranch>(libraryBranch, HttpStatus.NOT_FOUND);
+			   return new ResponseEntity<LibraryBranch>(HttpStatus.NOT_FOUND);
 		   }		     
 	}
 
