@@ -39,14 +39,10 @@ public class BooklLoansController {
 	@RequestMapping(value = "/duedates", method = RequestMethod.PUT)
 	public ResponseEntity<?>  overrideDuedate(@RequestBody BookLoans bookLoans) throws SQLException, ParseException {
 		
-//		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//		Date parsedDate = dateFormat.parse(duedate);
-		//bookLoans.setDueDate(duedate);
-		
 		   if(bookLoansService.overrideDuedate(bookLoans)) {
 			   return new ResponseEntity<BookLoans>(bookLoans, HttpStatus.OK);
 		   }else {
-			   return new ResponseEntity<BookLoans>(bookLoans, HttpStatus.CONFLICT);
+			   return new ResponseEntity<BookLoans>(bookLoans, HttpStatus.NOT_FOUND);
 		   }
 		
 	}

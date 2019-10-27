@@ -32,7 +32,7 @@ public class BorrowerController {
 		   if(borowerService.addBorrower(borrower)) {
 			   return new ResponseEntity<Borrower>(borrower, HttpStatus.CREATED);
 		   }else {
-			   return new ResponseEntity<Borrower>(borrower, HttpStatus.CONFLICT);
+			   return new ResponseEntity<Borrower>(borrower, HttpStatus.BAD_REQUEST);
 		   }		     
 	}
 	
@@ -42,7 +42,7 @@ public class BorrowerController {
 		   if(borowerService.updateBorrower(borrower)) {
 			   return new ResponseEntity<Borrower>(borrower, HttpStatus.OK);
 		   }else {
-			   return new ResponseEntity<Borrower>(borrower, HttpStatus.CONFLICT);
+			   return new ResponseEntity<Borrower>(borrower, HttpStatus.NOT_FOUND);
 		   }
 	}
 	

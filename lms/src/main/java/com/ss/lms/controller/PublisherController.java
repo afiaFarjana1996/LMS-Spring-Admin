@@ -33,7 +33,7 @@ public class PublisherController {
 		   if(publisherService.addPublisher(publisher)) {
 			   return new ResponseEntity<Publisher>(publisher, HttpStatus.CREATED);
 		   }else {
-			   return new ResponseEntity<Publisher>(publisher, HttpStatus.CONFLICT);
+			   return new ResponseEntity<Publisher>(publisher, HttpStatus.BAD_REQUEST);
 		   }		     
 	}
 	
@@ -44,7 +44,7 @@ public class PublisherController {
 		   if(publisherService.updatePublisher(publisher)) {
 			   return new ResponseEntity<Publisher>(publisher, HttpStatus.OK);
 		   }else {
-			   return new ResponseEntity<Publisher>(publisher, HttpStatus.CONFLICT);
+			   return new ResponseEntity<Publisher>(publisher, HttpStatus.NOT_FOUND);
 		   }		     
 	}
 	@RequestMapping(value = "/publishers/{publisherId}", method = RequestMethod.DELETE)

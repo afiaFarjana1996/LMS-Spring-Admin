@@ -35,7 +35,7 @@ public class BookController {
 		   if(bookService.addBook(book)) {
 			   return new ResponseEntity<Book>(book, HttpStatus.CREATED);
 		   }else {
-			   return new ResponseEntity<Book>(book, HttpStatus.CONFLICT);
+			   return new ResponseEntity<Book>(book, HttpStatus.BAD_REQUEST);
 		   }	
 	}
 	
@@ -46,7 +46,7 @@ public class BookController {
 		 if(bookService.updateBook(book)) {
 			   return new ResponseEntity<Book>(book, HttpStatus.OK);
 		   }else {
-			   return new ResponseEntity<Book>(book, HttpStatus.CONFLICT);
+			   return new ResponseEntity<Book>(book, HttpStatus.NOT_FOUND);
 		   }
 	}
 	

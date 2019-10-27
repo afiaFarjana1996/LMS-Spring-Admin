@@ -36,7 +36,7 @@ public class AuthorController {
 		   if(authorService.addAuthor(author)) {
 			   return new ResponseEntity<Author>(author, HttpStatus.CREATED);
 		   }else {
-			   return new ResponseEntity<Author>(author, HttpStatus.CONFLICT);
+			   return new ResponseEntity<Author>(author, HttpStatus.BAD_REQUEST);
 		   }	
 	}
 	
@@ -47,7 +47,7 @@ public class AuthorController {
 		   if(authorService.updateAuthor(author)) {
 			   return new ResponseEntity<Author>(author, HttpStatus.OK);
 		   }else {
-			   return new ResponseEntity<Author>(author, HttpStatus.BAD_REQUEST);
+			   return new ResponseEntity<Author>(author, HttpStatus.NOT_FOUND);
 		   }
 	}
 	

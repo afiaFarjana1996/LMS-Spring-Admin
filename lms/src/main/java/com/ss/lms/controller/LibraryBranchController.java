@@ -34,7 +34,7 @@ public class LibraryBranchController {
 		   if(libraryBranchService.addLibraryBranch(libraryBranch)) {
 			   return new ResponseEntity<LibraryBranch>(libraryBranch, HttpStatus.CREATED);
 		   }else {
-			   return new ResponseEntity<LibraryBranch>(libraryBranch, HttpStatus.CONFLICT);
+			   return new ResponseEntity<LibraryBranch>(libraryBranch, HttpStatus.BAD_REQUEST);
 		   }		     
 	}
 	
@@ -44,7 +44,7 @@ public class LibraryBranchController {
 		   if(libraryBranchService.updateLibraryBranch(libraryBranch)) {
 			   return new ResponseEntity<LibraryBranch>(libraryBranch, HttpStatus.OK);
 		   }else {
-			   return new ResponseEntity<LibraryBranch>(libraryBranch, HttpStatus.CONFLICT);
+			   return new ResponseEntity<LibraryBranch>(libraryBranch, HttpStatus.NOT_FOUND);
 		   }		     
 	}
 	
